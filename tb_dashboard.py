@@ -1,9 +1,12 @@
 
+
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-# ── PAGE 
+
+
+#  PAGE 
 st.set_page_config(
     page_title="Global TB Statistics Dashboard",
     page_icon=None,
@@ -11,7 +14,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ── COLORS 
+#  COLORS 
 BG      = "#f8fafc"
 SURFACE = "#ffffff"
 BORDER  = "#e2e8f0"
@@ -37,7 +40,7 @@ RNAMES = {
     "EUR": "Europe",  "SEA": "SE Asia",  "WPR": "W. Pacific",
 }
 
-# ── CSS ───────────────────────────────────────────────────────────────────────
+#  CSS 
 st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -106,7 +109,7 @@ div[data-testid="stMultiSelect"] > label {{
 </style>
 """, unsafe_allow_html=True)
 
-# ── DATA ──────────────────────────────────────────────────────────────────────
+#  DATA 
 @st.cache_data
 def load():
     df = pd.read_csv("clean_file.csv")
@@ -130,11 +133,11 @@ C_DETECT     = "Case detection rate (all forms), percent"
 all_years   = sorted(df[C_YEAR].unique())
 all_regions = sorted(df[C_REGION].unique())
 
-# ── TITLE ─────────────────────────────────────────────────────────────────────
+#  TITLE 
 st.markdown('<div class="dash-title">Global Tuberculosis Statistics Dashboard</div>',
             unsafe_allow_html=True)
 
-# ── INLINE FILTER BAR ─────────────────────────────────────────────────────────
+#  INLINE FILTER BAR 
 fc1, fc2, fc3, fc4 = st.columns([1.4, 1.4, 0.8, 0.8])
 
 with fc1:
@@ -167,7 +170,7 @@ with fc4:
 
 st.markdown('<div style="height:8px;"></div>', unsafe_allow_html=True)
 
-# ── FILTER ────────────────────────────────────────────────────────────────────
+#  FILTER 
 regions_use = sel_regions if sel_regions else all_regions
 dff = df[
     df[C_YEAR].between(year_range[0], year_range[1]) &
@@ -178,7 +181,7 @@ if dff.empty:
     st.warning("No data matches the current filters.")
     st.stop()
 
-# ── HELPERS ───────────────────────────────────────────────────────────────────
+#  HELPERS 
 def fmt_big(n):
     if n >= 1e9: return f"{n/1e9:.1f}B"
     if n >= 1e6: return f"{n/1e6:.1f}M"
@@ -208,7 +211,7 @@ def yax(title_text, **extra):
     d.update(extra)
     return d
 
-# ── KPI STRIP ─────────────────────────────────────────────────────────────────
+#  KPI STRIP 
 st.markdown(f"""
 <div class="kpi-strip">
   <div class="kpi-item">
@@ -234,10 +237,10 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# ── ROW 1 ─────────────────────────────────────────────────────────────────────
+#  ROW 1 
 col1, col2, col3 = st.columns([1.3, 1.0, 1.3], gap="medium")
 
-# ── CHART 1: Trend Line ───────────────────────────────────────────────────────
+#  CHART 1: Trend Line 
 with col1:
     st.markdown('<div class="card"><div class="card-title">Global Incident Cases Trend (1990–2013)</div>',
                 unsafe_allow_html=True)
@@ -263,7 +266,7 @@ with col1:
     st.plotly_chart(fig1, use_container_width=True, config={"displayModeBar": False})
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ── CHART 2: Pie ──────────────────────────────────────────────────────────────
+#  CHART 2: Pie 
 with col2:
     st.markdown('<div class="card"><div class="card-title">Incident Cases Share by Region</div>',
                 unsafe_allow_html=True)
@@ -289,7 +292,7 @@ with col2:
     st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ── CHART 3: Top N Deaths Bar ─────────────────────────────────────────────────
+#  CHART 3: Top N Deaths Bar 
 with col3:
     st.markdown(f'<div class="card"><div class="card-title">Top {top_n} Countries by TB Deaths (Non-HIV)</div>',
                 unsafe_allow_html=True)
@@ -319,10 +322,10 @@ with col3:
     st.plotly_chart(fig3, use_container_width=True, config={"displayModeBar": False})
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ── ROW 2 ─────────────────────────────────────────────────────────────────────
+#  ROW 2 
 col4, col5, col6 = st.columns([1.3, 1.0, 1.3], gap="medium")
 
-# ── CHART 4: Prevalence vs Incidence Scatter ──────────────────────────────────
+#  CHART 4: Prevalence vs Incidence Scatter 
 with col4:
     st.markdown('<div class="card"><div class="card-title">Prevalence vs Incidence (per 100k)</div>',
                 unsafe_allow_html=True)
@@ -360,7 +363,7 @@ with col4:
     st.plotly_chart(fig4, use_container_width=True, config={"displayModeBar": False})
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ── CHART 5: Detection Rate Bar ───────────────────────────────────────────────
+#  CHART 5: Detection Rate Bar 
 with col5:
     st.markdown('<div class="card"><div class="card-title">Mean Case Detection Rate by Region (%)</div>',
                 unsafe_allow_html=True)
@@ -393,7 +396,7 @@ with col5:
     st.plotly_chart(fig5, use_container_width=True, config={"displayModeBar": False})
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ── CHART 6: Mortality Area ───────────────────────────────────────────────────
+#  CHART 6: Mortality Area 
 with col6:
     st.markdown('<div class="card"><div class="card-title">TB Mortality Comparison (Excl. vs HIV+)</div>',
                 unsafe_allow_html=True)
