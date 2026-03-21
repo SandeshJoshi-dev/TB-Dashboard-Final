@@ -1,16 +1,9 @@
-"""
-Global Tuberculosis Statistics Dashboard
-=========================================
-pip install streamlit pandas plotly
-streamlit run tb_dashboard.py
-Place clean_file.csv in the same folder.
-"""
 
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-# ── PAGE ──────────────────────────────────────────────────────────────────────
+# ── PAGE 
 st.set_page_config(
     page_title="Global TB Statistics Dashboard",
     page_icon=None,
@@ -18,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ── COLORS ────────────────────────────────────────────────────────────────────
+# ── COLORS 
 BG      = "#f8fafc"
 SURFACE = "#ffffff"
 BORDER  = "#e2e8f0"
